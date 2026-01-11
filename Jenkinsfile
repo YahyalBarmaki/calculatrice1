@@ -46,9 +46,10 @@ pipeline {
                 sh 'docker build -t calculatrice:${BUILD_NUMBER} .'
                 sh 'docker tag calculatrice:${BUILD_NUMBER} calculatrice:latest'
             }
-        }
+       }
+       */
     }
-*/
+
     post {
         success {
             echo 'Pipeline exécuté avec succès !'
