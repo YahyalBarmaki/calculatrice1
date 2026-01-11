@@ -1,0 +1,70 @@
+pipeline:
+    agent: any
+
+    tools:
+        maven: Maven-3.9
+        jdk: JDK-11
+
+    stages:
+        - stage:
+              name: Checkout
+              steps:
+                  - echo: Récupération du code source...
+                  - checkout: scm
+
+        - stage:
+              name: Build
+              steps:
+                  - echo: Compilation du projet...
+                  - sh: mvn clean compile
+
+        - stage:
+              name: Test
+              steps:
+                  - echo: Exécution des tests unitaires...
+                  - sh: mvn test
+              post:
+                  always:
+                      - junit: '**/target/surefire-reports/*.xml'
+
+        - stage:
+              name: SonarQube Analysis
+              steps:
+                  - echo: Analyse SonarQube...
+                  - withSonarQubeEnv:
+                        name: SonarQube
+                        steps:
+                            - sh: mvn sonar:sonar
+
+        - stage:
+              name: Quality Gate
+              steps:
+                  - echo: Vérification Quality Gate...
+                  - timeout:
+                        time: 1
+                        unit: MINUTES
+                        steps:
+                            - waitForQualityGate:
+                                  abortPipeline: true
+
+        - stage:
+              name: Package
+              steps:
+                  - echo: Création du JAR...
+                  - sh: mvn package -DskipTests
+
+        - stage:
+              name: Build Docker Image
+              steps:
+                  - echo: Construction de l'image Docker...
+                  - sh: docker build -t calculatrice:${BUILD_NUMBER} .
+                  - sh: docker tag calculatrice:${BUILD_NUMBER} calculatrice:latest
+
+    post:
+        success:
+            - echo: Pipeline exécuté avec succès !
+        failure:
+            - echo: Le pipeline a échoué.
+        always:
+            - echo: Nettoyage...
+            - cleanWs: true
