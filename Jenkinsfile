@@ -39,7 +39,7 @@ pipeline {
                 sh 'mvn package -DskipTests'
             }
         }
-
+/*
         stage('Build Docker Image') {
             steps {
                 echo 'Construction de l\'image Docker...'
@@ -48,7 +48,7 @@ pipeline {
             }
         }
     }
-
+*/
     post {
         success {
             echo 'Pipeline exécuté avec succès !'
