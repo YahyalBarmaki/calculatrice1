@@ -39,15 +39,16 @@ pipeline {
                 sh 'mvn package -DskipTests'
             }
         }
-/*
+
+        /*
         stage('Build Docker Image') {
             steps {
                 echo 'Construction de l\'image Docker...'
                 sh 'docker build -t calculatrice:${BUILD_NUMBER} .'
                 sh 'docker tag calculatrice:${BUILD_NUMBER} calculatrice:latest'
             }
-       }
-       */
+        }
+        */
     }
 
     post {
