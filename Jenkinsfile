@@ -1,10 +1,10 @@
 pipeline {
     agent any
 
-/*     tools {
+    tools {
         maven 'Maven-3.9'
-        jdk 'JDK-17'  // ← Gardez JDK-17
-    } */
+
+    }
 
     stages {
         stage('Checkout') {
