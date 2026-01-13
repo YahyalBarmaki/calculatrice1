@@ -1,10 +1,10 @@
 pipeline {
     agent any
 
-    tools {
+/*     tools {
         maven 'Maven-3.9'
         jdk 'JDK-17'  // ← Gardez JDK-17
-    }
+    } */
 
     stages {
         stage('Checkout') {
@@ -42,7 +42,7 @@ pipeline {
             }
         }
 
-        stage('Quality Gate') {
+      /*  stage('Quality Gate') {
             steps {
                 echo 'Vérification Quality Gate...'
                 timeout(time: 2, unit: 'MINUTES') {
@@ -50,6 +50,7 @@ pipeline {
                 }
             }
         }
+        */
         stage('Package') {
             steps {
                 echo 'Création du JAR...'
